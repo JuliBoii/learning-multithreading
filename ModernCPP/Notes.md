@@ -155,7 +155,7 @@ for (auto& i : vec) { i += 2; } // Add 2 to each element of v
 - Put `[]` instead of the function name
 - Write the arguments in the usual way
 - Write its body inline
-  - The semi-colon at the end of the lambda expression is necessary
+  - The semicolon at the end of the lambda expression is necessary
     ```c++
     [](int arg) { return 2 * arg; };
     ```
@@ -206,7 +206,7 @@ auto lam = [](int arg){ return 2 * arg; };
 - A lambda expression can "capture" a local variable
   - Makes it available in the lambda's body
   - put the name of the variable(s) inside the `[]`
-  - The lambda body contains an immutable copy of the local varibale
+  - The lambda body contains an immutable copy of the local variable
   ```c++
     int n = 2;
   
@@ -251,7 +251,7 @@ auto lam = [](int arg){ return 2 * arg; };
 ```
 
 - The object is captured as a reference to `*this`
-- The lambda expression is able to modify data memebers
+- The lambda expression is able to modify data members
 ```c++
 [this](int arg) { return(++m_data * arg); };
 ```
@@ -282,6 +282,8 @@ auto n_even = std::count_if(vec.begin(), vec.end());
 - Also, if you store data in a C++ standard container
   - that will also be copied
 
+---
+
 ### The Solution
 
 - Consider how it could be executed more efficiently
@@ -302,9 +304,9 @@ func(vec);          // Move vec's data into the function argument
 ### Some Terminology
 #### lvalue and rvalue before C++
 
-- A value can either be an lvalue or an rvalue
-- An lvalue may appear on the left of an assignment
-- An rvalue can only appear on the right
+- A value can either be a lvalue or a rvalue
+- A lvalue may appear on the left of an assignment
+- A rvalue can only appear on the right
 ```c++
 x = 2;      // x is an lvalue, 2 is an rvalue
 2 = x;      // Not legal C
@@ -312,13 +314,16 @@ x = 2;      // x is an lvalue, 2 is an rvalue
 x = func(); // x is an lvalue, func() is an rvalue
 func() = x; // Not legal C, but can be legal C++
 ```
+
+---
+
 #### lvalue and rvalue in C++
 
-- In C++, an lvalue represents a named memory location
+- In C++, a lvalue represents a named memory location
   - It has a name
   - We can take its address using the `&` operator
   - `x` is an lvalue   `// name is x, &x is legal`
-- Anything else is an rvalue
+- Anything else is a rvalue
   - `2` is an rvalue    `// 2 has no name, &2 is not legal`
   - `func()` is an rvalue    `// return value form function call has no name`
   - `// &func() is not legal`
@@ -336,6 +341,8 @@ func(vec);  // Does not compile
 ```
 
 - A lvalue cannot be moved
+
+---
 
 ### `std::move`
 
@@ -374,6 +381,8 @@ func(std::move(vec));
   - If we pass a literal or a temporary object
   - If we use `std::move()` to cast a variable
 
+---
+
 ### Move Semantics and Ownership
 
 - Consider these overloads
@@ -390,6 +399,8 @@ func(std::move(vec));
   - Not owned by any variable
   - Or the variable has lost ownership after a call to `std::move()`
   - The "test" object becomes the owner
+
+---
 
 ### Move Operators
 
