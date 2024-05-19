@@ -322,3 +322,88 @@ func() = x; // Not legal C, but can be legal C++
   - `2` is an rvalue    `// 2 has no name, &2 is not legal`
   - `func()` is an rvalue    `// return value form function call has no name`
   - `// &func() is not legal`
+
+---
+
+### The Solution?
+
+- Make `func()'s` argument an rvalue reference
+```c++
+void func(std::vector<std::string>&& arg);
+
+std::vector<std::string> vec(1000000);  // Vector of 1 million strings
+func(vec);  // Does not compile
+```
+
+- A lvalue cannot be moved
+
+### `std::move`
+
+- `std::move()` will cast its argument to rvalue
+```c++
+// Casts vec to an rvalue
+func(std::move(vec));
+```
+
+- This will move `vec's` data into the function argument
+- This should only be done if `vec's` data is expendable
+  - After calling `func()`, `vec's` data may be empty or unusable
+  - If we want to use `vec` again, we must re-assign its data
+- When we use `std::move()` our variable no longer owns the data
+  - When the function returns, the data may be gone or the variable may not be in a usable state.
+    - May even be in a usable state on some compilers, but not others
+- So the only sensible thing to do is either
+  - to wait and allow that variable to be destroyed
+- If one wants to use the data, then
+  - one can do that provided one reassign it or reinitialize it.
+
+---
+
+## Rvalue References and Overloading
+
+- Function can be overloaded on the value type
+  - Different behavior for lvalue and rvalue
+  ```c++
+    void func(const Test& test);        // Called when we pass an lvalue
+    void func(Test&& test);             // Called when we pass an rvalue
+  ```
+  
+- Usually, the lvalue version will be called
+  - When we pass a variable
+- The rvalue overload will be called
+  - If we pass a literal or a temporary object
+  - If we use `std::move()` to cast a variable
+
+### Move Semantics and Ownership
+
+- Consider these overloads
+  ```c++
+    void func(const Test& test);        // Called when we pass an lvalue
+    void func(Test&& test);             // Called when we pass an rvalue
+  ```
+  
+- lvalue argument
+  - Refers to an object outside `func()`
+  - The function can inspect this object
+  - It can make its own copy of the object
+- rvalue arguments
+  - Not owned by any variable
+  - Or the variable has lost ownership after a call to `std::move()`
+  - The "test" object becomes the owner
+
+### Move Operators
+
+- C++11 has two new special member functions
+  - The arguments are rvalue references
+- Overload of the copy constructor
+```c++
+// Move constructor
+Test(Test&& other) noexcept;
+```
+- Overload of the assignment operator
+```c++
+// Move assignment operator
+Test& operator = (Test&& other) noexcept;
+```
+- These operators are called during move operations
+  - Any object is only moveable if the class defines move operators
