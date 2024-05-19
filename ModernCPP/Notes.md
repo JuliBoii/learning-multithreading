@@ -101,6 +101,8 @@ auto hello str;     // hello has type std::string
 const auto& str = hello;     // hello is a const reference to std::string
 ```
 
+---
+
 ### `auto` Specifier and `for` loops
 
 - We can use `auto` to simplify loops
