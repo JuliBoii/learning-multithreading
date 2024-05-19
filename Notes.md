@@ -1,0 +1,324 @@
+# Multithreading Course Notes
+
+---
+
+## Universal Initializers
+
+- Initializer(s) within a pair of braces
+  - Can be used with any type
+    - examples
+    ```c++
+    int x{7};                              // Equivalent to int x = 7;
+    std::string str{"Let us begin"};       // Equivalent to std::string str = "Let us begin";
+    ```
+- Narrowing conversions are not allowed
+    ```c++
+      int x = 7.7      // Legal, although compilers may warn
+      int x{7.7};       // illegal
+    ```
+  
+- It can be used with compound types
+    ```c++
+      std::vector<int>vec{4, 3, 2, 1, 7, 4};     // std::vector variable with elements
+    ```
+
+---
+
+## `std::chrono` Durations
+
+- Types which represent time intervals
+  - Defined in `<chrono>`
+  - in the `std::chrono` namespace
+
+```c++
+// Namespace alias to simplify the code
+namespace sc = std::chrono;
+
+sc::seconds             // 1 second
+sc::milliseconds        // 1/1000 second
+sc::microseconds        // 1/1000000 seconds
+
+sc::seconds(2);             // 2 second interval
+sc::milliseconds(20);       // 20 millisecond interval
+sc::microseconds(50);       // 50 microsecond interval
+```
+---
+
+### `std::chrono` literals
+
+- C++14 provides literals for these time intervals in the `std::chrono::literals` namespace
+- This is an inline namespace
+
+```c++
+using namespace std::literals;
+
+2s      // 2 second interval
+20ms    // 20 milliseconds
+50us    // 50 microseconds
+```
+
+---
+
+## The `auto` Type Specifier
+
+- The compiler deduces the type from the initializer
+```c++
+auto x = 6;     // Equivalent to int x = 6;
+auto x{6};      // Equivalent to int x{6};
+```
+
+- This is very useful with complicated types
+```c++
+std::vector<std::string>vec;
+
+// Equivalent to std::vector<std::string>::iterator it = vec.begin();
+auto it = vec.begin();
+```
+
+- In modern C++, there are some cases where the type cannot be known by the programmer.
+  - In those cases, it is best to use `auto`
+
+---
+
+### `auto` Specifier and Qualifiers
+
+- `auto` will only give the underlying type
+```c++
+auto x = 6;     // x deduced as non-const
+```
+
+- Meaning it will ignore:
+  - const, reference, etc.
+```c++
+const std::string& str = "Hello";   // Refernce to const
+...
+auto hello str;     // hello has type std::string
+                    // it is a mutable copy of str
+```
+
+- if we need them, we must add them ourselves
+```c++
+const auto& str = hello;     // hello is a const reference to std::string
+```
+
+### `auto` Specifier and `for` loops
+
+- We can use `auto` to simplify loops
+```c++
+std::vector<int> vec;
+...
+for (auto it = vec.begin(); it != vec.end(); ++it) {
+  std::cout << *it << ",";      // Prints out each element
+}
+
+for (auto it = vec.begin(); it != vec.end(); ++it) {
+  *it +=2;      // Add 2 to each element of vec
+} 
+```
+
+---
+
+### Range for loops
+
+- Special syntax for iterating over containers
+```c++
+for (auto i : vec) {
+  std::cout << i << ", ";       // Prints out each element of v
+}
+
+// We need to use a reference to modify the elements
+for (auto& i : vec) { i += 2; } // Add 2 to each element of v
+```
+
+- To visit each element once, in order, without adding or removing elements
+- Otherwise, use a traditional loop
+
+---
+
+## Lambda Expression
+
+- Similar to "closures" in other languages
+- Can be thought of as "local functions"
+  - Anonymous functions
+  - Defined inline in a single statement
+- Ideal for short, simple helper functions which are only used once
+- Useful for passing a function arguments
+  - More convenient than functors or function pointers
+- Can also be returned by functions
+- Very useful as predicates for algorithm calls
+
+---
+
+### Lambda Expression Syntax
+
+- Similar to functions
+- Put `[]` instead of the function name
+- Write the arguments in the usual way
+- Write its body inline
+  - The semi-colon at the end of the lambda expression is necessary
+    ```c++
+    [](int arg) { return 2 * arg; };
+    ```
+
+---
+
+### Return Type
+
+- Deduced by the compiler in C++14
+  - The return type must be the same in all paths
+  - In C++17, can differ
+    - It has been relaxed
+    - For example:
+      - You can have a branch which returns `int`
+      - And a branch which returns `string`.
+- In C++11, deduced for a single statement which returns a value
+  ```c++
+    [](int arg) { return 2 * arg; };
+  ```
+- Otherwise, must be specified with a trailing return type
+  ```c++
+    [](int arg)->int { return 2 * arg; return arg; };
+  ```
+  
+---
+
+### Callable Object
+
+- A lambda expression is a callable object
+- To invoke it, put () after the body, with any arguments
+```c++
+// Invoke the lambda with argument 3
+[](int arg) { return 2 * arg; }(3);
+```
+
+- It can be stored in a variable of type `auto`
+  - Since it is a class that is defined by the compiler
+```c++
+// Store the lambda in a variable
+// The compiler will provide the type (not know to us)
+auto lam = [](int arg){ return 2 * arg; };
+```
+
+---
+
+## Capture
+
+- A lambda expression can "capture" a local variable
+  - Makes it available in the lambda's body
+  - put the name of the variable(s) inside the `[]`
+  - The lambda body contains an immutable copy of the local varibale
+  ```c++
+    int n = 2;
+  
+    // Captures the local variable n
+    [n] (int arg) { return(n * arg); };
+  ```
+
+---
+
+### Capture by Reference
+
+- The lambda can change a captured variable
+- Put `&` before the variable's name
+  ```c++
+    int n = 2;
+  
+    // Captures the local variable n by reference
+    [&n] (int arg) { return(++n * arg); };
+  ```
+  - Now it will be able to modify `n`.
+
+---
+
+### Implicit Capture
+
+- Captures all variables in scope
+  - `[=]` captures all variables by value
+  - `[&]` captures all variables by reference
+    - _This can be a bit dangerous, since we can modify anything by accident_
+- We can be more selective
+  - `[=, &x]` captures `x` by reference, all others by value
+  - `[&, =a, =b]` captures `a` and `b` by value, all others by reference
+
+---
+
+### Lambda Expressions in Member Functions 
+#### _Working with Classes_
+
+- To access the data members, capture `this`
+```c++
+[this]() { return m_data % 2; };    // Captures all data memebers
+```
+
+- The object is captured as a reference to `*this`
+- The lambda expression is able to modify data memebers
+```c++
+[this](int arg) { return(++m_data * arg); };
+```
+
+---
+
+### Lambda Expression Example
+
+```c++
+// Call count_if() algorithm using a lmabda expression as predicate
+auto n_even = std::count_if(vec.begin(), vec.end());
+
+// THe lambda definition goes inside the call!
+[](int n) {
+  return (n % 2 == 0);
+};
+```
+
+---
+
+## Move Semantics
+
+- C++11 optimization for copying objects
+  - In some cases, the data can be moved into the target
+  - Similar to moving files between folders
+  - Ex. `mv /some/path other/path`
+- This is an important optimization, since C++ copies by default
+- Also, if you store data in a C++ standard container
+  - that will also be copied
+
+### The Solution
+
+- Consider how it could be executed more efficiently
+```c++
+std::vector<std::string> vec(1000000);  // Vector of 1 million strings
+...                                     // Populate vec
+func(vec);          // Move vec's data into the function argument
+..                  // vec is not used again
+```
+
+- When `func()` is called:
+  - No memory is allocated
+  - The elements are moved from `vec` into the function argument
+  - After the function call, `vec` is an empty vector
+
+---
+
+### Some Terminology
+#### lvalue and rvalue before C++
+
+- A value can either be an lvalue or an rvalue
+- An lvalue may appear on the left of an assignment
+- An rvalue can only appear on the right
+```c++
+x = 2;      // x is an lvalue, 2 is an rvalue
+2 = x;      // Not legal C
+
+x = func(); // x is an lvalue, func() is an rvalue
+func() = x; // Not legal C, but can be legal C++
+```
+#### lvalue and rvalue in C++
+
+- In C++, an lvalue represents a named memory location
+  - It has a name
+  - We can take its address using the `&` operator
+  - `x` is an lvalue   `// name is x, &x is legal`
+- Anything else is an rvalue
+  - `2` is an rvalue    `// 2 has no name, &2 is not legal`
+  - `func()` is an rvalue    `// return value form function call has no name`
+  - `// &func() is not legal`
