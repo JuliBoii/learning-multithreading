@@ -527,3 +527,32 @@ std::vector<std::string>strings(5);
   - the type of `vec_strings` is deduced as `std::vector<std::string>`
   - `std::vector's` move constructor is called to initialize `vec_strings`
   - The vector elements are now owned by `vec_strings`
+
+---
+
+## Random Numbers in C++11
+
+- New classes defined in `<random>`
+  - avoid a number of issues with `std::rand()`
+- Random number engines
+  - Generate a sequence of random numbers
+- Distribution objects
+  - Scale a sequence of numbers
+  - Fit them into a given statistical distribution
+- We use the uniform distribution
+  - Every random number should be equally likely
+
+### Random Number Classes
+
+- Functors which overload `operator()`
+- Random number engine
+  - `std::mt19937` is usually the best choice
+  - Should be declared `static`
+  - Should only de declared once
+    - For example: _You do not want to be creating a new random number engine every time you call a function_
+- Distribution object
+  - `std::uniform_int_distribution<T>` for integers
+  - `std::uniform_real_distribution<T>` for floating-point
+- To get a random number
+  - Call the distribution's `operator()`
+  - Pass the engine object as argument
