@@ -437,7 +437,7 @@ Test& operator = (Test&& other) noexcept;
 
 ---
 
-#### `std::fstream`
+### `std::fstream`
 
 - `std::fstream` has a file handle as a data member
   - The constructor opens the file
@@ -542,6 +542,8 @@ std::vector<std::string>strings(5);
 - We use the uniform distribution
   - Every random number should be equally likely
 
+---
+
 ### Random Number Classes
 
 - Functors which overload `operator()`
@@ -556,3 +558,5 @@ std::vector<std::string>strings(5);
 - To get a random number
   - Call the distribution's `operator()`
   - Pass the engine object as argument
+
+---
