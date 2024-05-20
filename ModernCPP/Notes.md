@@ -420,3 +420,110 @@ Test& operator = (Test&& other) noexcept;
 ```
 - These operators are called during move operations
   - Any object is only moveable if the class defines move operators
+
+---
+
+### Move-only Types
+
+- Some types can be moved, but not copied
+  - `std::fstream`, `std::iostream`
+  - `std::unique_ptr`
+  - (Classes used in multi-threading)
+- These types follow th RAII idiom
+  - Only one object can own a given resource instance at a time
+  - The object acquires ownership in the constructor
+  - The object releases ownership in the destructor
+  - The resource instance can be moved from one object to another
+
+---
+
+#### `std::fstream`
+
+- `std::fstream` has a file handle as a data member
+  - The constructor opens the file
+  - The destructor closes the file
+- A `std::fstream` object cannot be copied, but it can be moved
+  - A moved-from object no longer owns the file handle
+  - The moved-to object becomes the owner of the file handle
+  - The file will be closed when the moved-to object is destroyed
+
+---
+
+### Delete and Defaulted Operators
+
+- In C++11, special member functions can be deleted
+```c++
+Test(const Test& other) = delete;   // Deleted copy constructor
+```
+- This prevents an object from being copied
+  - The function is defined, but cannot be called
+- Special member functions can also be defaulted
+```c++
+Test(const Test& other) = default;      // Default copy constructor
+```
+- This causes the compiler to generate a default member function
+  - e.g. The default copy constructor copies all the class members
+
+---
+
+### Pass by Value... or by Move?
+
+- In older C++, the argument is always copied by default
+```c++
+// This fucntion makes its own copy of test
+void func(Test test);
+```
+- In C++11, the argument can be moved if
+  - It is an rvalue
+  - And the type defines move operators
+- Otherwise it will be copied
+  - Provides compatibility with old code
+- All STL containers are moveable
+  - And almost all other C++ library types
+  - Built-in types are regarded as moveable (but are always copied)
+
+---
+
+## Lambda-local Variables
+
+- Variables which are local to the lambda body
+- Declared in the capture specifier
+  - Implicitly `auto`
+  - Must be initialized
+- Requires C++14
+```c++
+// y is local to the lambda body
+[y = 2](int x) {
+  return x+y;
+};
+```
+- Can be initialized from captured variables
+- No special syntax is needed
+```c++
+// Local variable z in this scope
+int z = 1;
+
+// Lambda body's local varibale y
+[y = z + 1](int x) {
+    return x + y;
+};
+```
+
+---
+
+### Lambda-local Variable and Capture by Move
+
+- Lambda-local variable can be move initialized
+```c++
+std::vector<std::string>strings(5);
+
+// Lambda expression which captures "strings"
+// by moving it into "vec_strings"
+[vec_strings = std::move(strings)] {
+  ...
+}
+```
+- This allows capture by move
+  - the type of `vec_strings` is deduced as `std::vector<std::string>`
+  - `std::vector's` move constructor is called to initialize `vec_strings`
+  - The vector elements are now owned by `vec_strings`
