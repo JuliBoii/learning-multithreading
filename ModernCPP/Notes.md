@@ -474,9 +474,9 @@ Test(const Test& other) = default;      // Default copy constructor
 void func(Test test);
 ```
 - In C++11, the argument can be moved if
-  - It is an rvalue
+  - It is a rvalue
   - And the type defines move operators
-- Otherwise it will be copied
+- Otherwise, it will be copied
   - Provides compatibility with old code
 - All STL containers are moveable
   - And almost all other C++ library types
@@ -560,3 +560,37 @@ std::vector<std::string>strings(5);
   - Pass the engine object as argument
 
 ---
+
+## `std::unique_ptr`
+
+- Smart pointer class
+- Template class defined in `<memory>`
+  - Has a traditional pointer as member
+- Supports most pointer operations
+  - But no increment/decrement
+- The idea is that this is a pointer which owns memory
+  - Not a pointer that aliases some other object
+  - So, for example, _you cannot use a `unique_ptr` to iterate through the elements of an array_
+- Move-only class which uses the RAII idiom
+  - Allocates memory in its constructor
+  - Automatically releases the memory when it goes out of scope
+    - _By calling delete_
+    - Thus, one does not have to manage the memory yourself
+  - Allows heap-allocated memory to be used like a stack object
+    - Can still be used like a local variable
+  - Has no more overhead than a traditional pointer
+
+---
+
+### `std::unique_ptr` Initialization
+
+- In C++11, we have to provide the pointer
+```c++
+// Allocate a single int with value 42
+std::unique_ptr<int> uniq_ptr(new int(42));
+```
+- C++14 has `std::make_unique()`
+- This calls `new()` internally
+```c++
+auto uniq_ptr = std::make_unique<int>(42);
+```
