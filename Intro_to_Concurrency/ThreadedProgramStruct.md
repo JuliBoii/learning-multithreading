@@ -13,3 +13,16 @@
   - The program ends when the main thread ends
 
 ---
+
+## Multi-threaded C++ Program Structure
+
+- Multi-threaded C++ program also have a main thread
+  - The main thread starts additional threads
+  - These could, in turn, start further threads
+- Each thread has its own entry point function
+  - When the thread starts, it executes the code in this function
+  - When teh function returns, the thread ends
+  - The main thread continues to execute its own code
+  - It does not wait for the other threads, unless we explicitly tell it to
+
+---
