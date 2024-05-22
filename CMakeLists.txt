@@ -18,3 +18,4 @@ set(CMAKE_CXX_STANDARD 23)
 #add_executable(UniqPtr "ModernCPP/uniquePtrsExample.cpp")
 
 add_executable(HelloThread "Intro_to_Concurrency/helloThread.cpp")
+add_executable(HelloFunctor "Intro_to_Concurrency/helloFunctor.cpp")
