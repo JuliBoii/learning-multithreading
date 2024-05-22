@@ -102,3 +102,19 @@ thr.join();
 // Capture by reference
 std::thread thr([]() { std::cout << "Hello, Lambda Thread!\n"; });
 ```
+
+---
+
+## Thread Function with Arguments
+
+- We can pass arguments to the entry point function
+- We list them as extra arguments to the constructor
+```c++
+// Thread entry point function
+void hello(std::string);
+
+// hello() takes a string argument
+std::thread thr(hello, "Hello, Thread!\n");
+```
+
+--- 
