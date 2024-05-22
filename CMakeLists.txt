@@ -17,3 +17,4 @@ set(CMAKE_CXX_STANDARD 23)
 #add_executable(RandomGen "ModernCPP/randomGenerator.cpp")
 #add_executable(UniqPtr "ModernCPP/uniquePtrsExample.cpp")
 
+add_executable(HelloThread "Intro_to_Concurrency/helloThread.cpp")
