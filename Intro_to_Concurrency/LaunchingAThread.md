@@ -116,5 +116,22 @@ void hello(std::string);
 // hello() takes a string argument
 std::thread thr(hello, "Hello, Thread!\n");
 ```
+- The `std::thread` object owns the arguments
+  - lvalue arguments are passed by value
+  - rvalue arguments are passed by move
 
 --- 
+
+## Thread Function with Pass by Move
+
+- To pass by move, we must provide an rvalue
+  - The argument must have a move constructor
+```c++
+// Callable object - thread entry point
+void func(std::string&&);
+
+std::string str = "abc";
+
+// Wrap the argument in a call to std::move()
+std::thread thr(func, std::move(str));
+```
