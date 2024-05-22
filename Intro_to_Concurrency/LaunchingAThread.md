@@ -99,5 +99,6 @@ thr.join();
 
 - We can use a lambda expression
 ```c++
-
+// Capture by reference
+std::thread thr([]() { std::cout << "Hello, Lambda Thread!\n"; });
 ```

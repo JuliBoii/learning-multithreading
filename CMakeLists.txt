@@ -19,3 +19,4 @@ set(CMAKE_CXX_STANDARD 23)
 
 add_executable(HelloThread "Intro_to_Concurrency/helloThread.cpp")
 add_executable(HelloFunctor "Intro_to_Concurrency/helloFunctor.cpp")
+add_executable(HelloLambda "Intro_to_Concurrency/helloLambda.cpp")
