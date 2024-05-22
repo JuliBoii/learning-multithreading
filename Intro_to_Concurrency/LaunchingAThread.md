@@ -124,7 +124,7 @@ std::thread thr(hello, "Hello, Thread!\n");
 
 ## Thread Function with Pass by Move
 
-- To pass by move, we must provide an rvalue
+- To pass by move, we must provide a rvalue
   - The argument must have a move constructor
 ```c++
 // Callable object - thread entry point
@@ -153,5 +153,25 @@ std::thread thr(func, std::move(str));
   ```
 - Use `std::cref()` for a const reference
 - _**Beware of dangling references!**_
+
+---
+
+## Member Function as Entry Point
+
+- We can use a member function as the entry point
+- Requires an object of the class
+```c++
+// Class which has the member fucntion
+class Greeter {
+    public:
+      void hello();
+};
+
+// An object of the class
+Greeter greeter;
+
+// Pass a pointer to the member function and a pointer to the object
+std::thread thr(&greeter::hello, &greeter);
+```
 
 ---
