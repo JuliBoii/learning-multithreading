@@ -135,3 +135,23 @@ std::string str = "abc";
 // Wrap the argument in a call to std::move()
 std::thread thr(func, std::move(str));
 ```
+
+---
+
+## Thread Function with Reference Argument
+
+- Use a reference wrapper
+  - Wrap the argument in a call to `std::ref()`
+  ```c++
+  // Callable object - thread entry point
+  void hello(std::string&);
+  
+  std::string str = "abc";
+  
+  // Wrap the argument in a call to std::ref()
+  std::thread thr(hello, std::ref(str)); 
+  ```
+- Use `std::cref()` for a const reference
+- _**Beware of dangling references!**_
+
+---

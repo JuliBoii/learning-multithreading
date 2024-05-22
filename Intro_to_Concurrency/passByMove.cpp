@@ -19,5 +19,9 @@ int main() {
 
     thr.join();
 
+    // Verify that str has been modified
+    std::cout << "Do I still have any data?" << ' ';
+    std::cout << (str.empty() ? "No" : "Yes") << ".\n";
+
     return 0;
 }
