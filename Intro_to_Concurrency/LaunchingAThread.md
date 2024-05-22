@@ -175,3 +175,32 @@ std::thread thr(&greeter::hello, &greeter);
 ```
 
 ---
+
+## Lambda Expression as Entry Point
+
+- We can use a lambda expression
+```c++
+int i = 3;
+
+// Capture by reference
+std::thread thr([&i] { i *= 2; });
+```
+
+---
+
+### Lambda Expression with Arguments
+
+- We can pass arguments to the lambda expression
+```c++
+std::thread thr(
+    // The first argument is the lambda expression
+    [] (int i1, int i2) {
+      std::cout << i1 + i2 << '\n';
+    },
+    
+    // The remaining arguments are passed to the lambda expression
+    2, 3
+);
+```
+
+---
