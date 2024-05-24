@@ -23,3 +23,20 @@ thr.native_handle();
 
 ---
 
+## `std::thread` ID
+
+- Each execution thread has a thread identifier
+  - Used internally by the system's implementation
+- Guaranteed to be unique
+  - If two thread identifiers are equal, the related objects are identical
+  - Could be used to store `std::thread` objects in associative containers
+  - _A new thread may get the ID of an earlier thread which has completed_
+```c++
+// Return the identifier of the current thread
+std::this_thread::get_id();
+
+// Return the identifier assocaiated with an std::thread object
+thr.get_id();
+```
+
+---
