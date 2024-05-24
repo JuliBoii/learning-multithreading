@@ -123,4 +123,5 @@ std::thread func() {
   // Return a temp object
   return std::thread(…);
 }
+
 ```
