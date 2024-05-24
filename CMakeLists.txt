@@ -29,3 +29,4 @@ set(CMAKE_CXX_STANDARD 23)
 
 add_executable(NativeHandle "Starting_With_Threads/nativeHandle.cpp")
 add_executable(HelloID "Starting_With_Threads/helloThreadId.cpp")
+add_executable(HelloSleep "Starting_With_Threads/helloSleep.cpp")

@@ -40,3 +40,22 @@ thr.get_id();
 ```
 
 ---
+
+## Pausing Threads
+
+- We can pause a thread or make it "sleep"
+```c++
+std::this_thread::sleep_for();
+```
+- Takes an argument of type `std::chrono::duration`
+```c++
+// C++14
+std::this_thread::sleep_for(2s);
+
+// C++11
+std::this_thread::sleep_for(std::chrono::seconds(2));
+```
+- This also works with single-threaded programs
+  - Pauses the thread which executes `main()`
+
+---
