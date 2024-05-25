@@ -40,11 +40,11 @@ void func(std::thread thr);
 
 // Pass a named object
 // Use std::move() to cast it to rvalue
-std::thread thr(…);
+std::thread thr(...);
 func(std::move(thr));
 
 // Pass a temporary object
-func(std::thread(…));
+func(std::thread(...));
 ```
 ---
 
@@ -55,7 +55,7 @@ func(std::thread(…));
 // Function returning a std::thread object
 std::thread func() {
   // Return a local variable
-  std::thread thr(…);
+  std::thread thr(...);
   return thr;
   
   // It is a bad idea to put a call to std::move() here,
@@ -63,7 +63,21 @@ std::thread func() {
   // return std::move(thr);
   
   // Return a temp object
-  return std::thread(…);
+  return std::thread(...);
 }
 
 ```
+
+## Threads and Exceptions
+
+- Each thread has its own execution stack
+- This stack is "unwound" when the thread throws an exception
+  - The destructor for all objects in scope are called
+  - The program moves up the thread's stack until it finds a suitable handler
+  - If no handler is found, the program is terminated
+- Other threads in the program cannot catch the exception
+  - Including the parent thread and the main thread
+- Exceptions can only be handled in the thread where they occur
+  - Use a try/catch block in the normal way
+
+---
