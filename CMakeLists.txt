@@ -33,3 +33,4 @@ add_executable(HelloSleep "Starting_With_Threads/System_Thead_Interface/helloSle
 
 add_executable(MoveThread "Starting_With_Threads/CPP_Thead_Class/moveThread.cpp")
 add_executable(ReturnThread "Starting_With_Threads/CPP_Thead_Class/returningThread.cpp")
+add_executable(ThrowExecpt "Starting_With_Threads/CPP_Thead_Class/throwExceptThread.cpp")
