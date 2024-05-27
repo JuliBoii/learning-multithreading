@@ -3,6 +3,7 @@ project(LearningMultiThreading)
 
 set(CMAKE_CXX_STANDARD 23)
 
+# Executables for Modern CPP Crash Course
 #add_executable(LearningMultiThreading main.cpp)
 #add_executable(InitExample "ModernCPP/initalizersExample.cpp")
 #add_executable(NullExample "ModernCPP/exampleOfNull.cpp")
@@ -17,6 +18,7 @@ set(CMAKE_CXX_STANDARD 23)
 #add_executable(RandomGen "ModernCPP/randomGenerator.cpp")
 #add_executable(UniqPtr "ModernCPP/uniquePtrsExample.cpp")
 
+# Executables for Introduction to Concurrency Dir
 #add_executable(HelloThread "Intro_to_Concurrency/helloThread.cpp")
 #add_executable(HelloFunctor "Intro_to_Concurrency/helloFunctor.cpp")
 #add_executable(HelloLambda "Intro_to_Concurrency/helloLambda.cpp")
@@ -27,15 +29,20 @@ set(CMAKE_CXX_STANDARD 23)
 #add_executable(PassByLambdaRef "Intro_to_Concurrency/passByLambdaRef.cpp")
 #add_executable(PassByLambdaArg "Intro_to_Concurrency/passByLambdaArgs.cpp")
 
+# System Thread Interface Dir Executables
 #add_executable(NativeHandle "Starting_With_Threads/System_Thead_Interface/nativeHandle.cpp")
 #add_executable(HelloID "Starting_With_Threads/System_Thead_Interface/helloThreadId.cpp")
 #add_executable(HelloSleep "Starting_With_Threads/System_Thead_Interface/helloSleep.cpp")
 
+# C++ Thread Classes Dir Executables
 #add_executable(MoveThread "Starting_With_Threads/CPP_Thead_Class/moveThread.cpp")
 #add_executable(ReturnThread "Starting_With_Threads/CPP_Thead_Class/returningThread.cpp")
 #add_executable(ThrowExecpt "Starting_With_Threads/CPP_Thead_Class/throwExceptThread.cpp")
 
-add_executable(Detach "Starting_With_Threads/Manage_A_Thread/detach.cpp")
-add_executable(UnsafeThrow "Starting_With_Threads/Manage_A_Thread/threadExceptUnsafe.cpp")
-add_executable(SafeThrow "Starting_With_Threads/Manage_A_Thread/threadExceptionSafe.cpp")
-add_executable(ThreadGuard "Starting_With_Threads/Manage_A_Thread/threadGuard.cpp")
+# Managing a Thread Dir Executables
+#add_executable(Detach "Starting_With_Threads/Manage_A_Thread/detach.cpp")
+#add_executable(UnsafeThrow "Starting_With_Threads/Manage_A_Thread/threadExceptUnsafe.cpp")
+#add_executable(SafeThrow "Starting_With_Threads/Manage_A_Thread/threadExceptionSafe.cpp")
+#add_executable(ThreadGuard "Starting_With_Threads/Manage_A_Thread/threadGuard.cpp")
+
+# Multiple Thread Dir Executables
