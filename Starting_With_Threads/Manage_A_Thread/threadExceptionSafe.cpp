@@ -14,7 +14,7 @@ int main() {
 
     try {
         // Code that might throw an exception
-        // ®throw std::exception();
+        // throw std::exception();
 
         // No exception if we got here - call join() as usual
         thr.join();

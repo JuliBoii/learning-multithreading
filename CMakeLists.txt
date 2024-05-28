@@ -46,3 +46,4 @@ set(CMAKE_CXX_STANDARD 23)
 #add_executable(ThreadGuard "Starting_With_Threads/Manage_A_Thread/threadGuard.cpp")
 
 # Multiple Thread Dir Executables
+add_executable(MultiThreads "Starting_With_Threads/Multiple_Threads/multipleThreads.cpp")
